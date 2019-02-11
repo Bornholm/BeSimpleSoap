@@ -35,7 +35,7 @@ class SoapWebServiceController implements ContainerAwareInterface
      /**
      * @var ContainerInterface
      */
-    private $container;
+    protected $container;
 
     /**
      * @var \SoapServer
