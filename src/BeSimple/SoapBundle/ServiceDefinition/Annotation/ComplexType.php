@@ -35,6 +35,11 @@ class ComplexType extends Configuration
         return $this->isNillable;
     }
 
+    public function getIsNillable()
+    {
+        return $this->isNillable;
+    }
+
     public function setName($name)
     {
         $this->name = $name;
@@ -46,6 +51,11 @@ class ComplexType extends Configuration
     }
 
     public function setNillable($isNillable)
+    {
+        $this->isNillable = (bool) $isNillable;
+    }
+
+    public function setIsNillable($isNillable)
     {
         $this->isNillable = (bool) $isNillable;
     }
@@ -66,7 +76,7 @@ class ComplexType extends Configuration
     public function setIsAttribute($isAttribute)
     {
             $this->isAttribute = $isAttribute;
-    
+
             return $this;
     }
 

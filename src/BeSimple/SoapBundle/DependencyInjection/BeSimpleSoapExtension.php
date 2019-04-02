@@ -177,6 +177,7 @@ class BeSimpleSoapExtension extends Extension
 
         $options = $container
             ->getDefinition('besimple.soap.context.'.$bindingSuffix)
+            ->setPublic(true)
             ->getArgument(2);
 
         $definition->replaceArgument(2, array_merge($options, $config));

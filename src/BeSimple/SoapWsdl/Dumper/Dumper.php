@@ -238,7 +238,7 @@ class Dumper
         $complexType = $this->document->createElement(static::XSD_NS.':complexType');
         $complexType->setAttribute('name', $type->getXmlType());
 
-        $all = $this->document->createElement(static::XSD_NS.':'.'sequence');
+        $all = $this->document->createElement(static::XSD_NS.':'.($type instanceof ArrayOfType ? 'sequence' : 'all'));
         $complexType->appendChild($all);
 
         foreach ($type->all() as $child) {
@@ -258,10 +258,10 @@ class Dumper
                     $name = $childType->getName();
                 }
 
-                if (0 === strpos($name, 'ArrayOf')) {
-                    $isArray = true;
-                    $name = lcfirst(substr($name, 7));
-                }
+//                if (0 === strpos($name, 'ArrayOf')) {
+//                    $isArray = true;
+//                    $name = lcfirst(substr($name, 7));
+//                }
 
                 $element->setAttribute('type', static::TYPES_NS.':'.$name);
             } else {

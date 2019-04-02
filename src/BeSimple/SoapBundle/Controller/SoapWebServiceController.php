@@ -15,12 +15,14 @@ namespace BeSimple\SoapBundle\Controller;
 use BeSimple\SoapBundle\Handler\ExceptionHandler;
 use BeSimple\SoapBundle\Soap\SoapRequest;
 use BeSimple\SoapBundle\Soap\SoapResponse;
+use BeSimple\SoapBundle\WebServiceContext;
 use BeSimple\SoapServer\SoapServerBuilder;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\FlattenException;
+use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
@@ -31,11 +33,7 @@ use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
  */
 class SoapWebServiceController implements ContainerAwareInterface
 {
-
-     /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    use ContainerAwareTrait;
 
     /**
      * @var \SoapServer
@@ -62,19 +60,12 @@ class SoapWebServiceController implements ContainerAwareInterface
      */
     private $headers = array();
 
-     /**
-     * {@inheritDoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
     /**
      * @return \BeSimple\SoapBundle\Soap\SoapResponse
      */
     public function callAction($webservice)
     {
+        /** @var WebServiceContext $webServiceContext */
         $webServiceContext   = $this->getWebServiceContext($webservice);
 
         $this->serviceBinder = $webServiceContext->getServiceBinder();
@@ -98,7 +89,7 @@ class SoapWebServiceController implements ContainerAwareInterface
     }
 
     /**
-     * @return Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function definitionAction($webservice)
     {
@@ -110,7 +101,8 @@ class SoapWebServiceController implements ContainerAwareInterface
             )
         ));
 
-        $request = $this->container->get('request');
+        /** @var Request $request */
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         $query = $request->query;
         if ($query->has('wsdl') || $query->has('WSDL')) {
             $request->setRequestFormat('wsdl');
@@ -136,9 +128,9 @@ class SoapWebServiceController implements ContainerAwareInterface
             throw new \LogicException(sprintf('The parameter "%s" is required in Request::$query parameter bag to generate the SoapFault.', '_besimple_soap_webservice'), null, $e);
         }
 
-        $view = 'TwigBundle:Exception:'.($this->container->get('kernel')->isDebug() ? 'exception' : 'error').'.txt.twig';
+        $view = '@Twig/Exception/'.($this->container->get('kernel')->isDebug() ? 'exception' : 'error').'.txt.twig';
         $code = $exception->getStatusCode();
-        $details = $this->container->get('templating')->render($view, array(
+        $details = $this->container->get('twig')->render($view, array(
             'status_code' => $code,
             'status_text' => isset(Response::$statusTexts[$code]) ? Response::$statusTexts[$code] : '',
             'exception'   => $exception,
