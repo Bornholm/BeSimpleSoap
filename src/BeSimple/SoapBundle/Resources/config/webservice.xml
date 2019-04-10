@@ -96,6 +96,10 @@
                 <argument>dateTime</argument>
                 <argument>xsd:dateTime</argument>
             </call>
+            <call method="addType">
+                <argument>base64Binary</argument>
+                <argument>xsd:base64Binary</argument>
+            </call>
         </service>
     </services>
 
