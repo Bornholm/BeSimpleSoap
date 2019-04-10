@@ -42,7 +42,7 @@ class Definition
     {
         $this->options = array(
             'version' => \SOAP_1_1,
-            'style' => \SOAP_RPC,
+            'style' => \SOAP_DOCUMENT,
             'use' => \SOAP_LITERAL,
             'location' => null,
         );
