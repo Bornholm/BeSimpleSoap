@@ -239,6 +239,10 @@ class Dumper
         $rootElement->setAttribute('name', $type->getName());
 
         $complexType = $this->document->createElement(static::XSD_NS.':complexType');
+        if ($type instanceof ArrayOfType) {
+            $complexType->setAttribute('name', $type->getName());
+        }
+
         $rootElement->appendChild($complexType);
 
         //$all = $this->document->createElement(static::XSD_NS.':'.($type instanceof ArrayOfType ? 'sequence' : 'all'));
@@ -288,7 +292,7 @@ class Dumper
             }
         }
 
-        $this->domSchema->appendChild($rootElement);
+        $this->domSchema->appendChild($type instanceof ArrayOfType ? $complexType : $rootElement);
     }
 
     protected function addPortType()
