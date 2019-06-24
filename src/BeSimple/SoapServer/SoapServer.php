@@ -99,6 +99,7 @@ class SoapServer extends \SoapServer
         ob_start();
         parent::handle($soapRequest->getContent());
         $response = ob_get_clean();
+        $response = str_replace('SOAP-ENV', 'soap', $response);
 
         // Remove headers added by SoapServer::handle() method
         header_remove('Content-Length');
