@@ -277,7 +277,7 @@ class Dumper
             }
 
             if ($child->isNillable()) {
-                $element->setAttribute('nillable', 'true');
+                $element->setAttribute('minOccurs', 0);
             }
 
             if ($type instanceof ArrayOfType || $isArray) {
