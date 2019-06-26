@@ -111,6 +111,7 @@ class SoapServer extends \SoapServer
         $envelop->setAttribute('soap:encodingStyle', 'http://schemas.xmlsoap.org/soap/encoding/');
         $envelop->setAttribute('xmlns:soapenc', 'http://schemas.xmlsoap.org/soap/encoding/');
         $envelop->setAttribute('xmlns:xsd', 'http://www.w3.org/2001/XMLSchema');
+        $envelop->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
 
         /** @var \DOMElement $body */
         $body = $envelop->childNodes->item(0);
