@@ -122,8 +122,11 @@ class SoapServer extends \SoapServer
         $responseRoot->setAttribute('xmlns', $ns1);
 
         $envelop->removeAttributeNS('http://schemas.xmlsoap.org/soap/envelope/', 'SOAP-ENV');
+        $envelop->removeAttributeNS('http://schemas.xmlsoap.org/soap/encoding/', 'SOAP-ENC');
 
         $response = $dom->saveXML();
+
+        $response = preg_replace('/xsi:type="ns1:\w*"/', '', $response);
 
         // Remove headers added by SoapServer::handle() method
         header_remove('Content-Length');
