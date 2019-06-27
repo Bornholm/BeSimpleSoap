@@ -89,7 +89,7 @@ abstract class AbstractVersion implements VersionInterface
         $operation->setAttribute('name', $method->getName());
 
         $soapOperation = $this->document->createElement($this->soapNs.':operation');
-        $soapOperation->setAttribute('soapAction', $this->namespace.'/'.$method->getName());
+        $soapOperation->setAttribute('soapAction', $this->namespace.$method->getName());
         $operation->appendChild($soapOperation);
 
         $this->getBindingNode()->appendChild($operation);

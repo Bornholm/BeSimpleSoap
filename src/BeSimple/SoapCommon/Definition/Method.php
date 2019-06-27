@@ -53,7 +53,7 @@ class Method
 
     public function getUse()
     {
-        return \SOAP_LITERAL;
+        return \SOAP_ENCODED;
     }
 
     public function addHeader($name, $type)
